@@ -49,7 +49,7 @@ private:
     static inline std::vector<labelBox> labelList;
 
     TextDrawer textDrawer;
-    cv::Mat winCanvas, settingRes, helpPage, aboutPage;
+    cv::Mat winCanvas, settingRes, helpPage, aboutPage, helpPageEN, aboutPageEN;
 
     void Init(int tabIdx = 0) {
         textDrawer.setSize(24);
@@ -60,14 +60,11 @@ private:
         rcFileInfo rc;
         rc = jarkUtils::GetResource(IDB_PNG_SETTING_RES, L"PNG");
         settingRes = cv::imdecode(cv::Mat(1, (int)rc.size, CV_8UC1, (uint8_t*)rc.ptr), cv::IMREAD_UNCHANGED);
-        if (GlobalVar::settingParameter.UI_LANG == 0) {
-            helpPage = settingRes({ 0, 0, 1000, 750 });
-            aboutPage = settingRes({ 0, 750, 1000, 750 });
-        }
-        else {
-            helpPage = settingRes({ 1000, 0, 1000, 750 });
-            aboutPage = settingRes({ 1000, 750, 1000, 750 });
-        }
+        
+        helpPage = settingRes({ 0, 0, 1000, 750 });
+        helpPageEN = settingRes({ 1000, 0, 1000, 750 });
+        aboutPage = settingRes({ 0, 750, 1000, 750 });
+        aboutPageEN = settingRes({ 1000, 750, 1000, 750 });        
 
         // GeneralTab
         if (generalTabCheckBoxList.empty()) {
@@ -236,11 +233,11 @@ public:
     }
 
     void refreshHelpTab() {
-        jarkUtils::overlayImg(winCanvas, helpPage, 0, 50);
+        jarkUtils::overlayImg(winCanvas, GlobalVar::settingParameter.UI_LANG == 0 ? helpPage : helpPageEN, 0, 50);
     }
 
     void refreshAboutTab() {
-        jarkUtils::overlayImg(winCanvas, aboutPage, 0, 50);
+        jarkUtils::overlayImg(winCanvas, GlobalVar::settingParameter.UI_LANG == 0 ? aboutPage : aboutPageEN, 0, 50);
         textDrawer.putAlignCenter(winCanvas, { 0, 580, 400, 40 }, jarkUtils::wstringToUtf8(appVersion).c_str(), { 186, 38, 60, 255 });
         textDrawer.putAlignCenter(winCanvas, { 0, 670, 400, 40 }, getUIString(19), { 186, 38, 60, 255 });
         textDrawer.putAlignCenter(winCanvas, { 0, 700, 400, 40 }, jarkUtils::COMPILE_DATE_TIME, { 186, 38, 60, 255 });

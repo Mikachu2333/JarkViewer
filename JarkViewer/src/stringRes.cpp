@@ -36,7 +36,7 @@ const char* const UIStringTable[STRING_MAX_NUM][2] = {
     {"浅色", "Light"},
     {"深色", "Dark"},
     {"语言", "Language"},
-    {"打印", "Printer"},
+    {"打印", "Print"},
     {"中文", "中文"},  // 30
     {"English", "English"},
     {"使用Ctrl+O或拖入图像文件打开", "Use Ctrl+O or drag the image file to open."},
@@ -108,7 +108,7 @@ const wchar_t* const UIStringTableW[STRING_MAX_NUM][2] = {
     {L"退出 (&X)", L"E&xit"},
     {L"打开新图像 (&O)", L"&Open new image"},  // 35
     {L"文件属性 (&F)", L"&File properties"},
-    {L"XX", L"XX"},
+    {L"帮助 (&H)", L"&Help"},
     {L"XX", L"XX"},
     {L"XX", L"XX"},
     {L"XX", L"XX"},  // 40

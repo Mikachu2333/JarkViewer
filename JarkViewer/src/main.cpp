@@ -945,6 +945,10 @@ public:
             operateQueue.push({ ActionENUM::setting, 0 });
         }break;
 
+        case ContextMenu::openHelp: {
+            operateQueue.push({ ActionENUM::setting, 2 });
+        }break;
+
         case ContextMenu::aboutSoftware: {
             operateQueue.push({ ActionENUM::setting, 3 });
         }break;
