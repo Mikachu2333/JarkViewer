@@ -38,10 +38,9 @@ You can also select color modes: `Color`, `Gray`, `Document`, `Dithering`.
 ## 🗃️ Additional Features
 
 1.  🍀 Fully static linking compilation, native portable single file
-2.  ✅ Automatically remembers last window position/size
-3.  🌗 Window automatically adapts to system dark/light theme
-4.  ♟️ Chessboard background for image transparent areas
-5.  📖 Supports reading metadata/prompts from AI-generated images (e.g., Stable-Diffusion, Flux, ComfyUI) 【*Provided the image contains such information; not all text-to-image outputs include it*】
+1.  ✅ Automatically remembers last window position/size
+1.  ♟️ Chessboard background for image transparent areas
+1.  📖 Supports reading prompt parameter information from open-source AI-generated images. Images output by StableDiffusion WebUI and ComfyUI typically contain embedded prompt parameters or workflow JSON. However, if the images are re-encoded through circulation on various online platforms, this information may be removed.
 
 🔧 If prompted about missing `MSVCP140.dll` etc. on startup, please download and install the VC++ runtime: [Microsoft Visual C++ 2015-2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)
 
@@ -63,11 +62,11 @@ When cloning the repository source code, only the latest commit is necessary as 
 git clone git@github.com:jark006/JarkViewer.git --depth=1
 ```
 
-This software is built with fully static linking. Developers need to prepare all third-party static library files before compilation. Please download the corresponding version of the third-party static library package from the link below and extract it to the specified location as instructed.
+This project is developed using `Visual Studio 2026`, with all third-party libraries statically linked. Developers need to prepare all third-party static library files before compilation. Please download the corresponding version of the third-party static library archive from the link below and extract it to the specified location according to the instructions.
 
 Static Library Download: [https://github.com/jark006/JarkViewer/releases/tag/static_lib](https://github.com/jark006/JarkViewer/releases/tag/static_lib)
 
-With the exception of `OpenCV`, the static libraries above were copied from libraries installed via vcpkg. The OpenCV static library compilation baseline instruction set is AVX2, meaning it only supports `Intel 4th generation` / `AMD Ryzen series` and later CPUs. Besides removing unnecessary components like dnn/js/java/python bindings, the following main modifications were made:
+With the exception of `OpenCV`, the static libraries above were copied from libraries installed via vcpkg. The OpenCV static library compilation baseline instruction set is AVX2, meaning it only supports `Intel 4th generation` / `AMD Ryzen series` and later CPUs. The following main modifications were made:
 1.  In source file `opencv-4.12.0\modules\imgcodecs\src\loadsave.cpp` lines #68-79, removed the image resolution limit.
 2.  In source file `opencv-4.12.0\modules\highgui\src\window_w32.cpp` line #337, changed `IDC_CROSS` to `IDC_ARROW`, i.e., not using a crosshair cursor inside `cv::imshow()` windows.
 

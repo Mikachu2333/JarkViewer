@@ -39,9 +39,8 @@
 
 1. 🍀 全静态链接编译，原生绿色单文件
 1. ✅ 自动记忆上次窗口位置/尺寸
-1. 🌗 窗口自适应系统 深色/浅色 主题
 1. ♟️ 图片透明区域使用国际象棋棋盘背景
-1. 📖 支持读取AI生成图像（如 Stable-Diffusion、Flux、ComfyUI）的提示词等信息【前提是图片中包含了提示词信息，不是所有的文生图图片都包含提示词信息的】
+1. 📖 支持读取开源AI生成图像的提示词信息【StableDiffusion WebUI、ComfyUI输出的图像一般都会内嵌提示词参数或工作流JSON，若图像经过各大网络平台传播重新编码，该信息可能会被移除】
 
 🔧 若启动时提示缺失 `MSVCP140.dll` 等，请下载并安装 VC++运行库: [Microsoft Visual C++ 2015-2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)
 
@@ -63,11 +62,11 @@
 git clone git@github.com:jark006/JarkViewer.git --depth=1
 ```
 
-本软件采用全库静态链接，开发者需要在编译前备好所有第三方静态库文件，请在以下链接下载对应版本的第三方静态库文件压缩包，按说明解压到对应位置。
+本项目使用 `Visual Studio 2026` 进行开发，全部第三方库静态链接，开发者需要在编译前备好所有第三方静态库文件，请在以下链接下载对应版本的第三方静态库文件压缩包，按说明解压到对应位置。
 
 静态库下载： [https://github.com/jark006/JarkViewer/releases/tag/static_lib](https://github.com/jark006/JarkViewer/releases/tag/static_lib)
 
-以上静态库除 `OpenCV` 外，均使用vcpkg安装的静态库复制而来。OpenCV静态库的编译指令集基准为AVX2，即只支持`Intel 4代` / `AMD Ryzen系列` 及后续CPU，除了移除dnn/js/java/python绑定等等不需要的组件，还有以下几个主要修改：
+以上静态库除 `OpenCV` 外，均使用vcpkg安装的静态库复制而来。OpenCV静态库的编译指令集基准为AVX2，即只支持`Intel 4代` / `AMD Ryzen系列` 及后续CPU，有以下几个主要修改：
 1. 在源码 `opencv-4.12.0\modules\imgcodecs\src\loadsave.cpp` #68-79 移除图像分辨率限制。
 1. 在源码 `opencv-4.12.0\modules\highgui\src\window_w32.cpp` #337 将 `IDC_CROSS` 改为 `IDC_ARROW`，即在 `cv::imshow()` 窗口内不使用十字光标。
 
