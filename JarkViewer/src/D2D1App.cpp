@@ -1,7 +1,6 @@
 #include "D2D1App.h"
 
-D2D1App::D2D1App() 
-{
+D2D1App::D2D1App() {
     loadSettings();
     m_parameters.DirtyRectsCount = 0;
     m_parameters.pDirtyRects = nullptr;
@@ -9,9 +8,7 @@ D2D1App::D2D1App()
     m_parameters.pScrollOffset = nullptr;
 }
 
-D2D1App::~D2D1App()
-{
-    saveSettings();
+D2D1App::~D2D1App() {
     this->DiscardDeviceResources();
     SafeRelease(m_pD2DFactory);
     SafeRelease(m_pWICFactory);
@@ -84,8 +81,7 @@ void D2D1App::saveSettings() const {
 }
 
 // 初始化
-HRESULT D2D1App::Initialize(HINSTANCE hInstance)
-{
+HRESULT D2D1App::Initialize(HINSTANCE hInstance) {
     HRESULT hr = E_FAIL;
     //register window class
     WNDCLASSEX wcex = { sizeof(WNDCLASSEX) };
@@ -141,8 +137,7 @@ HRESULT D2D1App::Initialize(HINSTANCE hInstance)
     return hr;
 }
 
-HRESULT D2D1App::CreateDeviceIndependentResources()
-{
+HRESULT D2D1App::CreateDeviceIndependentResources() {
     // 创建D2D工厂
     HRESULT hr = D2D1CreateFactory(
         D2D1_FACTORY_TYPE_SINGLE_THREADED,
@@ -169,8 +164,7 @@ HRESULT D2D1App::CreateDeviceIndependentResources()
     return hr;
 }
 
-HRESULT D2D1App::CreateDeviceResources()
-{
+HRESULT D2D1App::CreateDeviceResources() {
     // DXGI 工厂
     IDXGIFactory2*						pDxgiFactory = nullptr;
     // DXGI 设备
@@ -230,8 +224,7 @@ HRESULT D2D1App::CreateDeviceResources()
     return hr;
 }
 
-void D2D1App::CreateWindowSizeDependentResources()
-{
+void D2D1App::CreateWindowSizeDependentResources() {
     // DXGI 适配器
     IDXGIAdapter*						pDxgiAdapter = nullptr;
     // DXGI 工厂
@@ -349,8 +342,7 @@ void D2D1App::CreateWindowSizeDependentResources()
 }
 
 // 丢弃设备相关资源
-void D2D1App::DiscardDeviceResources()
-{
+void D2D1App::DiscardDeviceResources() {
     SafeRelease(m_pD2DTargetBimtap);
     SafeRelease(m_pSwapChain);
     SafeRelease(m_pD2DDeviceContext);
@@ -362,9 +354,9 @@ void D2D1App::DiscardDeviceResources()
 void D2D1App::Run() {
     while (m_fRunning) {
         MSG msg;
-        if (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+        if (PeekMessageW(&msg, NULL, 0, 0, PM_REMOVE)) {
             TranslateMessage(&msg);
-            DispatchMessage(&msg);
+            DispatchMessageW(&msg);
         }
         else {
             DrawScene();
@@ -372,13 +364,8 @@ void D2D1App::Run() {
     }
 }
 
-//void D2D1App::OnResize(UINT width, UINT height)
-//{
-//    CreateWindowSizeDependentResources();
-//}
-
-void D2D1App::OnDestroy()
-{
+void D2D1App::OnDestroy() {
+    saveSettings();
     m_fRunning = FALSE;
 }
 
