@@ -339,12 +339,13 @@ public:
     cv::Mat loadPSD(wstring_view path, const vector<uint8_t>& buf);
     cv::Mat loadTGA_HDR(wstring_view path, const vector<uint8_t>& buf);
     cv::Mat loadSVG(wstring_view path, const vector<uint8_t>& buf);
-    cv::Mat loadJXR(wstring_view path, const vector<uint8_t>& buf);
-    cv::Mat loadMat(wstring_view path, const vector<uint8_t>& buf);
     cv::Mat loadPFM(wstring_view path, const vector<uint8_t>& buf);
     cv::Mat loadQOI(wstring_view path, const vector<uint8_t>& buf);
     cv::Mat loadHeic(wstring_view path, const vector<uint8_t>& buf);
     cv::Mat loadRaw(wstring_view path, const vector<uint8_t>& buf);
+
+    cv::Mat loadImageWinCOM(wstring_view path, const vector<uint8_t>& buf);
+    cv::Mat loadImageOpenCV(wstring_view path, const vector<uint8_t>& buf);
 
     ImageAsset loadAvif(wstring_view path, const vector<uint8_t>& buf);
     ImageAsset loadJXL(wstring_view path, const vector<uint8_t>& buf);

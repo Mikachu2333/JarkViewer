@@ -34,7 +34,7 @@ private:
     static const int tabHeight = 50;
     static const int tabWidth = 150;
 
-    static inline const cv::Rect jarkBtnRect{ 440, 100, 300, 120 };
+    static inline const cv::Rect jarkBtnRect{ 440, 100, 520, 120 };
     static inline const cv::Rect reposityBtnRect{ 440, 280, 520, 90 };
     static inline const cv::Rect baiduBtnRect{ 440, 380, 520, 116 };
     static inline const cv::Rect lanzouBtnRect{ 440, 510, 520, 90 };

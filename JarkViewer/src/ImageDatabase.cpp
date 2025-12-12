@@ -544,12 +544,17 @@ ImageAsset ImageDatabase::loadAvif(wstring_view path, const std::vector<uint8_t>
         rgb.chromaUpsampling = AVIF_CHROMA_UPSAMPLING_BEST_QUALITY;
         rgb.avoidLibYUV = AVIF_FALSE;  // 使用libyuv加速（如果可用）
 
-        avifRGBImageAllocatePixels(&rgb);
+        result = avifRGBImageAllocatePixels(&rgb);
+        if (result != AVIF_RESULT_OK) {
+            JARK_LOG("Failed to AllocatePixels: {}", avifResultToString(result));
+            break;
+        }
+
         result = avifImageYUVToRGB(decoder->image, &rgb);
         if (result != AVIF_RESULT_OK) {
             avifRGBImageFreePixels(&rgb);
             JARK_LOG("Failed to convert YUV to RGB: {}", avifResultToString(result));
-            return imageAsset;
+            break;
         }
 
         cv::Mat frame;
@@ -1213,7 +1218,7 @@ cv::Mat ImageDatabase::loadSVG(wstring_view path, const vector<uint8_t>& buf) {
 }
 
 
-cv::Mat ImageDatabase::loadJXR(wstring_view path, const vector<uint8_t>& buf) {
+cv::Mat ImageDatabase::loadImageWinCOM(wstring_view path, const vector<uint8_t>& buf) {
     HRESULT hr = CoInitialize(NULL);
     if (FAILED(hr)) {
         std::cerr << "Failed to initialize COM library." << std::endl;
@@ -1506,7 +1511,7 @@ ImageAsset ImageDatabase::loadAnimation(wstring_view path, const vector<uint8_t>
 }
 
 
-cv::Mat ImageDatabase::loadMat(wstring_view path, const vector<uint8_t>& buf) {
+cv::Mat ImageDatabase::loadImageOpenCV(wstring_view path, const vector<uint8_t>& buf) {
     cv::Mat img;
     try {
         img = cv::imdecode(buf, cv::IMREAD_UNCHANGED);
@@ -1831,7 +1836,7 @@ ImageAsset ImageDatabase::loadLivp(wstring_view path, const vector<uint8_t>& fil
         img = loadHeic(path, imageFileData);
     }
     else if (imageExt == "jpg" || imageExt == "jpeg") {
-        img = loadMat(path, imageFileData);
+        img = loadImageOpenCV(path, imageFileData);
     }
 
     auto exifTmp = ExifParse::getExif(path, imageFileData.data(), imageFileData.size());
@@ -1903,7 +1908,10 @@ static size_t getVideoSize(string_view exifStr) {
 
 // Android 实况照片 jpg/jpeg/heic/heif
 ImageAsset ImageDatabase::loadMotionPhoto(wstring_view path, const vector<uint8_t>& fileBuf, bool isJPG = false) {
-    auto img = isJPG ? loadMat(path, fileBuf) : loadHeic(path, fileBuf);
+    auto img = isJPG ? loadImageOpenCV(path, fileBuf) : loadHeic(path, fileBuf);
+    if (img.empty())
+        img = loadImageWinCOM(path, fileBuf);
+
     if (img.empty()) {
         auto exifInfo = ExifParse::getSimpleInfo(path, 0, 0, fileBuf.data(), fileBuf.size());
         return { ImageFormat::Still, getErrorTipsMat(), {}, {}, exifInfo };
@@ -2016,6 +2024,13 @@ ImageAsset ImageDatabase::myLoader(const wstring& path) {
         auto imageAsset = loadJXL(path, fileBuf);
 
         if (imageAsset.format == ImageFormat::None) {
+            imageAsset.primaryFrame = loadImageWinCOM(path, fileBuf);
+            if (!imageAsset.primaryFrame.empty()) {
+                imageAsset.format = ImageFormat::Still;
+            }
+        }
+
+        if (imageAsset.format == ImageFormat::None) {
             imageAsset.format = ImageFormat::Still;
             imageAsset.primaryFrame = getErrorTipsMat();
             imageAsset.exifInfo = ExifParse::getSimpleInfo(path, 0, 0, fileBuf.data(), fileBuf.size());
@@ -2051,6 +2066,14 @@ ImageAsset ImageDatabase::myLoader(const wstring& path) {
     }
     else if (ext == L"avif" || ext == L"avifs") { // avif 静态或动画
         auto imageAsset = loadAvif(path, fileBuf);
+
+        if (imageAsset.format == ImageFormat::None) {
+            imageAsset.primaryFrame = loadImageWinCOM(path, fileBuf);
+            if (!imageAsset.primaryFrame.empty()) {
+                imageAsset.format = ImageFormat::Still;
+            }
+        }
+
         if (imageAsset.format == ImageFormat::None) {
             imageAsset.format = ImageFormat::Still;
             imageAsset.primaryFrame = getErrorTipsMat();
@@ -2061,7 +2084,6 @@ ImageAsset ImageDatabase::myLoader(const wstring& path) {
                 fileBuf.data(), fileBuf.size())
                 + ExifParse::getExif(path, fileBuf.data(), fileBuf.size());
 
-            // TODO 上面几种格式待测试 有些在解码时已应用旋转
             const size_t idx = imageAsset.exifInfo.find("\n方向: ");
             if (idx != string::npos) {
                 handleExifOrientation(imageAsset.exifInfo[idx + 9] - '0', imageAsset.primaryFrame);
@@ -2090,7 +2112,7 @@ ImageAsset ImageDatabase::myLoader(const wstring& path) {
     string exifInfo;
 
     if (ext == L"jxr") {
-        img = loadJXR(path, fileBuf);
+        img = loadImageWinCOM(path, fileBuf);
     }
     else if (ext == L"tga" || ext == L"hdr") {
         img = loadTGA_HDR(path, fileBuf);
@@ -2131,11 +2153,15 @@ ImageAsset ImageDatabase::myLoader(const wstring& path) {
     else if (supportRaw.contains(ext)) {
         img = loadRaw(path, fileBuf);
         if (img.empty())
+            img = loadImageWinCOM(path, fileBuf);
+        if (img.empty())
             img = getErrorTipsMat();
     }
 
     if (img.empty())
-        img = loadMat(path, fileBuf);
+        img = loadImageOpenCV(path, fileBuf);
+    if (img.empty())
+        img = loadImageWinCOM(path, fileBuf);
 
     if (exifInfo.empty()) {
         auto exifTmp = ExifParse::getExif(path, fileBuf.data(), fileBuf.size());
