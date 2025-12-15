@@ -376,7 +376,7 @@ LRESULT D2D1App::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
         LPCREATESTRUCT pcs = (LPCREATESTRUCT)lParam;
         D2D1App* pD2DApp = (D2D1App*)pcs->lpCreateParams;
         SetWindowLongPtrW(hwnd, GWLP_USERDATA, (LONG_PTR)pD2DApp);
-        return 1;
+        return TRUE;
     }
     case WM_GETMINMAXINFO: {
         MINMAXINFO* mmi = (MINMAXINFO*)lParam;
@@ -476,7 +476,7 @@ LRESULT D2D1App::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
     //#endif
     }
 
-    return DefWindowProc(hwnd, message, wParam, lParam);
+    return DefWindowProcW(hwnd, message, wParam, lParam);
 }
 
 

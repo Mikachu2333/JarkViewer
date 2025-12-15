@@ -2,6 +2,7 @@
  功能：Direct2D 1.1应用程序类，使用时可以继承这个类
  作者：Ray1024
  网址：http://www.cnblogs.com/Ray1024/
+ 仓库：https://github.com/Ray1024/Direct2D/tree/master/Direct2D_1.1/D2D1Template
  ***********************************************************************/
 
 
@@ -12,21 +13,13 @@
 
 class D2D1App {
 public:
-    // 构造函数
     D2D1App();
-    // 析构函数
     virtual ~D2D1App();
 
-    // 初始化
     virtual HRESULT Initialize(HINSTANCE hInstance);
-    // 可以重写此函数来实现你想做的每帧执行的操作
-    virtual void UpdateScene(float dt) {};
-    // 渲染
     virtual void DrawScene() = 0;
 
-    // 消息循环
     void Run();
-    // 处理消息
     static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
     static HMENU CreateContextMenu(HWND hwnd);
     static void ShowContextMenu(HWND hwnd, int x, int y);

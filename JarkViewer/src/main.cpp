@@ -598,6 +598,7 @@ public:
         if (mouseIsPressing) {
             auto slideDelta = mousePos - mousePressPos;
             mousePressPos = mousePos;
+            // TODO 双击切换全屏会导致鼠标位置变化
             operateQueue.push({ ActionENUM::slide, slideDelta.x, slideDelta.y });
         }
     }
@@ -1721,6 +1722,10 @@ public:
         switch (operateAction.action)
         {
         case ActionENUM::newSize: {
+            while (operateQueue.isNext(ActionENUM::newSize)) {
+                operateAction = operateQueue.get();
+            }
+
             if (operateAction.width == 0 || operateAction.height == 0)
                 break;
 

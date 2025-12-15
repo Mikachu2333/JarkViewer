@@ -247,51 +247,47 @@ struct Cood {
     int x = 0;
     int y = 0;
 
-    void operator+=(const Cood& t) {
-        this->x += t.x;
-        this->y += t.y;
+    void operator+=(const Cood& other) {
+        x += other.x;
+        y += other.y;
     }
 
-    void operator+=(const int i) {
-        this->x += i;
-        this->y += i;
+    void operator+=(const int num) {
+        x += num;
+        y += num;
     }
 
-    Cood operator+(const Cood& t) const {
-        Cood temp;
-        temp.x = this->x + t.x;
-        temp.y = this->y + t.y;
-        return temp;
+    Cood operator+(const Cood& other) const {
+        return { x + other.x, y + other.y };
     }
 
-    Cood operator-(const Cood& t) const {
-        Cood temp;
-        temp.x = this->x - t.x;
-        temp.y = this->y - t.y;
-        return temp;
+    Cood operator-(const Cood& other) const {
+        return { x - other.x, y - other.y };
     }
 
-    Cood operator*(int i) const {
-        Cood temp;
-        temp.x = this->x * i;
-        temp.y = this->y * i;
-        return temp;
+    Cood operator*(int num) const {
+        return { x * num, y * num };
     }
 
-    Cood operator/(int i) const {
-        Cood temp;
-        temp.x = this->x / i;
-        temp.y = this->y / i;
-        return temp;
+    Cood operator/(int num) const {
+        return { x / num, y / num };
     }
 
-    bool operator==(const Cood& t) const {
-        return (this->x == t.x) && (this->y == t.y);
+    bool operator==(const Cood& other) const {
+        return (x == other.x) && (y == other.y);
     }
 
-    void operator=(int n) {
-        this->x = n;
-        this->y = n;
+    bool operator==(const int num) const {
+        return (x == num) && (y == num);
+    }
+
+    bool operator!=(const int num) const {
+        return (x != num) || (y != num);
+    }
+
+    void operator=(const int num) {
+        x = num;
+        y = num;
     }
 };
 
@@ -359,6 +355,8 @@ private:
     std::mutex mtx;
 
 public:
+    ActionENUM lastAction = ActionENUM::none;
+
     void push(Action action) {
         std::unique_lock<std::mutex> lock(mtx);
 
@@ -386,7 +384,16 @@ public:
 
         Action res = queue.front();
         queue.pop();
+        lastAction = res.action;
         return res;
+    }
+
+    bool isNext(const ActionENUM actionEnum) {
+        std::unique_lock<std::mutex> lock(mtx);
+
+        if (queue.empty())
+            return false;
+        return queue.front().action == actionEnum;
     }
 };
 
