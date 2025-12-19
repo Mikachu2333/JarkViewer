@@ -454,7 +454,6 @@ public:
 
         case WM_RBUTTONUP: {//右键
             if (GlobalVar::settingParameter.rightClickAction == 0) {
-                //ShowContextMenu(m_hWnd, x, y);
                 PostMessageW(m_hWnd, WM_CONTEXTMENU, 0, MAKELPARAM(x, y));
             }
             else {
@@ -1674,6 +1673,9 @@ public:
                 (GlobalVar::isSystemDarkMode ? deepTheme : lightTheme) : 
                 (GlobalVar::settingParameter.UI_Mode == 1 ? lightTheme : deepTheme);
             operateQueue.push({ ActionENUM::normalFresh });
+
+            BOOL themeMode = GlobalVar::settingParameter.UI_Mode == 0 ? GlobalVar::isSystemDarkMode : (GlobalVar::settingParameter.UI_Mode == 1 ? 0 : 1);
+            DwmSetWindowAttribute(m_hWnd, DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE, &themeMode, sizeof(BOOL));
         }
 
         auto operateAction = operateQueue.get();

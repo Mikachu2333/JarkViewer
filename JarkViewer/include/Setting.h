@@ -288,6 +288,7 @@ public:
 
                         if (radio.stringIDs.front() == 24) {
                             GlobalVar::isNeedUpdateTheme = true;
+                            updateWindowAttribute();
                         }
                     }
                 }
@@ -462,6 +463,11 @@ public:
         }
     }
 
+    static void updateWindowAttribute() {
+        BOOL themeMode = GlobalVar::settingParameter.UI_Mode == 0 ? GlobalVar::isSystemDarkMode : (GlobalVar::settingParameter.UI_Mode == 1 ? 0 : 1);
+        DwmSetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE, &themeMode, sizeof(BOOL));
+    }
+
     void windowsMainLoop() {
         cv::namedWindow(windowsNameAnsi, cv::WINDOW_AUTOSIZE);
         cv::resizeWindow(windowsNameAnsi, winWidth, winHeight);
@@ -478,8 +484,10 @@ public:
                 SendMessageW(hwnd, WM_SETICON, ICON_BIG, (LPARAM)hIcon);
                 SendMessageW(hwnd, WM_SETICON, ICON_SMALL, (LPARAM)hIcon);
             }
-            BOOL themeMode = GlobalVar::settingParameter.UI_Mode == 0 ? GlobalVar::isSystemDarkMode : (GlobalVar::settingParameter.UI_Mode == 1 ? 0 : 1);
-            DwmSetWindowAttribute(hwnd, DWMWINDOWATTRIBUTE::DWMWA_USE_IMMERSIVE_DARK_MODE, &themeMode, sizeof(BOOL));
+            updateWindowAttribute();
+        }
+        else {
+            return;
         }
 
         while (cv::getWindowProperty(windowsNameAnsi, cv::WND_PROP_VISIBLE) > 0) {
