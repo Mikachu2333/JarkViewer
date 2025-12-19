@@ -234,7 +234,7 @@ public:
 
     CurImageParameter curPar;
     ExtraUIRes extraUIRes;
-    std::chrono::system_clock::time_point lastClickTimestamp;
+    std::chrono::steady_clock::time_point lastClickTimestamp{}, lastWinResizeTimestamp{};
 
     JarkViewerApp() {
         m_wndCaption = std::format(L"{} {}", appName, appVersion);
@@ -383,7 +383,7 @@ public:
             if (cursorPos == CursorPos::centerArea) {
                 mouseIsPressing = true;
 
-                auto now = std::chrono::system_clock::now();
+                auto now = std::chrono::steady_clock::now();
                 auto elapsed = duration_cast<std::chrono::milliseconds>(now - lastClickTimestamp).count();
                 lastClickTimestamp = now;
 
@@ -1322,7 +1322,7 @@ public:
         cv::resize(tmpCanvas, tmpCanvas, cv::Size(tmpCanvas.cols / 2, tmpCanvas.cols / 2));
 
         for (int i = 0; i <= 90; i += ((100 - i) / 6)) {
-            auto start_clock = system_clock::now();
+            auto start_clock = steady_clock::now();
             auto view = rotateImage(tmpCanvas, i)(cv::Rect((maxEdge - winWidth) / 4, (maxEdge - winHeight) / 4, winWidth / 2, winHeight / 2));
             cv::resize(view, mainCanvas, cv::Size(winWidth, winHeight), 0, 0, cv::INTER_NEAREST);
             drawExifInfo(mainCanvas);
@@ -1330,7 +1330,7 @@ public:
 
             updateMainCanvas();
 
-            if (duration_cast<milliseconds>(system_clock::now() - start_clock).count() < 10)
+            if (duration_cast<milliseconds>(steady_clock::now() - start_clock).count() < 10)
                 Sleep(1);
         }
     }
@@ -1354,7 +1354,7 @@ public:
         cv::resize(tmpCanvas, tmpCanvas, cv::Size(tmpCanvas.cols / 2, tmpCanvas.cols / 2));
 
         for (int i = 0; i >= -90; i -= ((100 + i) / 6)) {
-            auto start_clock = system_clock::now();
+            auto start_clock = steady_clock::now();
             auto view = rotateImage(tmpCanvas, i)(cv::Rect((maxEdge - winWidth) / 4, (maxEdge - winHeight) / 4, winWidth / 2, winHeight / 2));
             cv::resize(view, mainCanvas, cv::Size(winWidth, winHeight), 0, 0, cv::INTER_NEAREST);
             drawExifInfo(mainCanvas);
@@ -1362,7 +1362,7 @@ public:
 
             updateMainCanvas();
 
-            if (duration_cast<milliseconds>(system_clock::now() - start_clock).count() < 10)
+            if (duration_cast<milliseconds>(steady_clock::now() - start_clock).count() < 10)
                 Sleep(1);
         }
     }
@@ -1442,7 +1442,7 @@ public:
         const int frame_width = nextmainCanvas.cols;
         const int frame_height = nextmainCanvas.rows;
         for (int x = frame_width; x > 0; x -= ((frame_width * 1.5 - x) / 8)) {
-            auto start_clock = system_clock::now();
+            auto start_clock = steady_clock::now();
 
             cv::Mat view = panorama(cv::Rect(x, 0, frame_width, frame_height));
             cv::resize(view, mainCanvas, cv::Size(winWidth, winHeight), 0, 0, cv::INTER_NEAREST);
@@ -1450,7 +1450,7 @@ public:
 
             updateMainCanvas();
 
-            if (duration_cast<milliseconds>(system_clock::now() - start_clock).count() < 10)
+            if (duration_cast<milliseconds>(steady_clock::now() - start_clock).count() < 10)
                 Sleep(1);
         }
     }
@@ -1484,7 +1484,7 @@ public:
         const int frame_width = nextmainCanvas.cols;
         const int frame_height = nextmainCanvas.rows;
         for (int x = 0; x <= frame_width; x += ((frame_width*1.5 - x) / 8)) {
-            auto start_clock = system_clock::now();
+            auto start_clock = steady_clock::now();
 
             cv::Mat view = panorama(cv::Rect(x, 0, frame_width, frame_height));
             cv::resize(view, mainCanvas, cv::Size(winWidth, winHeight), 0, 0, cv::INTER_NEAREST);
@@ -1492,7 +1492,7 @@ public:
 
             updateMainCanvas();
 
-            if (duration_cast<milliseconds>(system_clock::now() - start_clock).count() < 10)
+            if (duration_cast<milliseconds>(steady_clock::now() - start_clock).count() < 10)
                 Sleep(1);
         }
     }
@@ -1526,7 +1526,7 @@ public:
         const int frame_width = nextmainCanvas.cols;
         const int frame_height = nextmainCanvas.rows;
         for (int y = frame_height; y >= 0; y -= ((frame_height * 1.5 - y) / 8)) {
-            auto start_clock = system_clock::now();
+            auto start_clock = steady_clock::now();
 
             cv::Mat view = panorama(cv::Rect(0, y, frame_width, frame_height));
             cv::resize(view, mainCanvas, cv::Size(winWidth, winHeight), 0, 0, cv::INTER_NEAREST);
@@ -1534,7 +1534,7 @@ public:
 
             updateMainCanvas();
 
-            if (duration_cast<milliseconds>(system_clock::now() - start_clock).count() < 10)
+            if (duration_cast<milliseconds>(steady_clock::now() - start_clock).count() < 10)
                 Sleep(1);
         }
     }
@@ -1568,7 +1568,7 @@ public:
         const int frame_width = nextmainCanvas.cols;
         const int frame_height = nextmainCanvas.rows;
         for (int y = 0; y <= frame_height; y += ((frame_height * 1.5 - y) / 8)) {
-            auto start_clock = system_clock::now();
+            auto start_clock = steady_clock::now();
 
             cv::Mat view = panorama(cv::Rect(0, y, frame_width, frame_height));
             cv::resize(view, mainCanvas, cv::Size(winWidth, winHeight), 0, 0, cv::INTER_NEAREST);
@@ -1576,7 +1576,7 @@ public:
 
             updateMainCanvas();
 
-            if (duration_cast<milliseconds>(system_clock::now() - start_clock).count() < 10)
+            if (duration_cast<milliseconds>(steady_clock::now() - start_clock).count() < 10)
                 Sleep(1);
         }
     }
