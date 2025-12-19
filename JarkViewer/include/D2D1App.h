@@ -35,6 +35,7 @@ public:
     virtual void OnContextMenuCommand(WPARAM wParam) = 0;
 
     virtual void OnResize(UINT width, UINT height) = 0;
+    virtual void OnRequestExitOtherWindows() = 0;
     virtual void OnDestroy();
 
 protected:

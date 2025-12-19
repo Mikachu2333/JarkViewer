@@ -21,7 +21,7 @@
 */
 
 std::wstring_view appName = L"JarkViewer";
-std::wstring_view appVersion = L"v1.31";
+std::wstring_view appVersion = L"v1.32";
 std::wstring_view jarkLink = L"https://github.com/jark006";
 std::wstring_view RepositoryLink = L"https://github.com/jark006/JarkViewer";
 std::wstring_view BaiduLink = L"https://pan.baidu.com/s/1ka7p__WVw2du3mnOfqWceQ?pwd=6666"; // 密码 6666
@@ -2038,8 +2038,6 @@ public:
         } break;
 
         case ActionENUM::requestExit: {
-            Printer::requestExit();
-            Setting::requestExit();
             PostMessageW(m_hWnd, WM_DESTROY, 0, 0);
         } break;
         }
@@ -2146,6 +2144,10 @@ public:
         }
     }
 
+    void OnRequestExitOtherWindows() {
+        Printer::requestExit();
+        Setting::requestExit();
+    }
 };
 
 void test();

@@ -463,6 +463,7 @@ LRESULT D2D1App::WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam) 
 
     case WM_DESTROY:
     {
+        pD2DApp->OnRequestExitOtherWindows();
         pD2DApp->OnDestroy();
         PostQuitMessage(0);
         return S_OK;

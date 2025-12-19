@@ -51,7 +51,7 @@
 
 ## 👋 快速上手
 
-1. 在 [Releases](https://github.com/jark006/JarkViewer/releases) 下载最新版。
+1. 下载最新版 [Releases](https://github.com/jark006/JarkViewer/releases)、[蓝奏网盘](https://jark006.lanzout.com/b0ko7mczg)、[百度云盘](https://pan.baidu.com/s/1ka7p__WVw2du3mnOfqWceQ?pwd=6666)，提取码：6666
 
 1. 使用 `winget` 安装
 ```sh
