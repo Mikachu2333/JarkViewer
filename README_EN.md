@@ -44,13 +44,13 @@ You can also select color modes: `Color`, `Gray`, `Document`, `Dithering`.
 1.  🍀 Fully static linking compilation, native portable single file
 1.  ✅ Automatically remembers last window position/size
 1.  ♟️ Chessboard background for image transparent areas
-1.  📖 Supports reading prompt parameter information from open-source AI-generated images. Images output by StableDiffusion WebUI and ComfyUI typically contain embedded prompt parameters or workflow JSON. However, if the images are re-encoded through circulation on various online platforms, this information may be removed.
+1.  📖 Supports reading prompt parameter information from open-source AI-generated images. Images output by StableDiffusion WebUI and ComfyUI typically contain embedded prompt parameters or workflow JSON. However. ⚠ if the images are re-encoded through circulation on various online platforms, this information may be removed.
 
 ## 📂 Format Support
 
 -   **Static**: `apng avif avifs bmp bpg dib exr gif hdr heic heif ico icon jfif jp2 jpe jpeg jpg jxl jxr livp pbm pfm pgm pic png pnm ppm psd pxm qoi ras sr svg tga tif tiff webp wp2`
 -   **Animated**: `gif webp png apng jxl bpg avif`
--   **Live**: `livp (IOS LivePhoto) jpg/heic/heif (Android MicroVideo/MotionPhoto)` *Audio not supported yet*
+-   **Live**: `livp (IOS LivePhoto) jpg/heic/heif (Android MicroVideo/MotionPhoto)` *⚠ Audio not supported yet*
 -   **RAW**: `3fr ari arw bay cap cr2 cr3 crw dcr dcs dng drf eip erf fff gpr iiq k25 kdc mdc mef mos mrw nef nrw orf pef ptx r3d raf raw rw2 rwl rwz sr2 srf srw x3f`
 
 ## 👋 Quick Start
@@ -68,7 +68,14 @@ scoop bucket add extras
 scoop install extras/jarkviewer
 ```
 
-> 🔧 Note: If encounter a missing `MSVCP140.dll` error during startup, please download and install the VC++ runtime: [Microsoft Visual C++ 2015-2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)
+> ⚠ Note: If encounter a missing `MSVCP140.dll` error during startup, please download and install the VC++ runtime: [Microsoft Visual C++ 2015-2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)
+
+## ⚠ Minimum System Support
+
+1. Only `64-bit` `Windows 10` or later are supported.
+2. The CPU must support the `AVX2` instruction set:
+	1. Intel 4th generation (Haswell) and later CPUs (since 2013).
+	2. AMD Ryzen series and later CPUs (since 2017).
 
 ---
 

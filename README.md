@@ -44,13 +44,13 @@
 1. 🍀 全静态链接编译，原生绿色单文件
 1. ✅ 自动记忆上次窗口位置/尺寸
 1. ♟️ 图片透明区域使用国际象棋棋盘背景
-1. 📖 支持读取开源AI生成图像的提示词信息【StableDiffusion WebUI、ComfyUI输出的图像一般都会内嵌提示词参数或工作流JSON，若图像经过各大网络平台传播重新编码，该信息可能会被移除】
+1. 📖 支持读取开源AI生成图像的提示词信息【StableDiffusion WebUI、ComfyUI输出的图像一般都会内嵌提示词参数或工作流JSON，⚠ 若图像经过各大网络平台传播重新编码，该信息可能会被移除】
 
 ## 📂 格式支持
 
 - **静态**：`apng avif avifs bmp bpg dib exr gif hdr heic heif ico icon jfif jp2 jpe jpeg jpg jxl jxr livp pbm pfm pgm pic png pnm ppm psd pxm qoi ras sr svg tga tif tiff webp wp2`
 - **动态**：`gif webp png apng jxl bpg avif`
-- **实况**：`livp(IOS LivePhoto) jpg/heic/heif(Android MicroVideo/MotionPhoto)` *暂不支持播放音频*
+- **实况**：`livp(IOS LivePhoto) jpg/heic/heif(Android MicroVideo/MotionPhoto)` *⚠ 暂不支持播放音频*
 - **RAW**：`3fr ari arw bay cap cr2 cr3 crw dcr dcs dng drf eip erf fff gpr iiq k25 kdc mdc mef mos mrw nef nrw orf pef ptx r3d raf raw rw2 rwl rwz sr2 srf srw x3f`
 
 ## 👋 快速上手
@@ -68,7 +68,15 @@ scoop bucket add extras
 scoop install extras/jarkviewer
 ```
 
-> 注意：若启动时提示缺失 `MSVCP140.dll` 等，请下载并安装 VC++运行库: [Microsoft Visual C++ 2015-2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)
+> ⚠ 注意：若启动时提示缺失 `MSVCP140.dll` 等，请下载并安装 VC++运行库: [Microsoft Visual C++ 2015-2022 Redistributable (x64)](https://aka.ms/vs/17/release/vc_redist.x64.exe)
+
+## ⚠ 最低系统支持
+
+1. 仅支持 `64位` 的 `Windows 10` 及以上操作系统。
+1. CPU必须支持 `AVX2` 指令集：
+	1. Intel 4代(Haswell)及后续CPU（2013年起）。
+	1. AMD Ryzen系列及后续CPU（2017年起）。
+
 ---
 
 ## 🛠️ 对于开发者
